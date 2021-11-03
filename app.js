@@ -26,7 +26,7 @@ mongoose.connect(DB, {
   useUnifiedTopology: true,
 });
 
-app.use(router);
+app.use('/api', router);
 
 app.use(errorLogger);
 app.use(errors());

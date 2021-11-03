@@ -1,5 +1,6 @@
 const Movie = require('../models/movies');
 const BadRequest = require('../errors/BadRequest');
+const ForbiddenToDelete = require('../errors/ForbiddenToDelete');
 const NotFound = require('../errors/NotFoundError');
 const {
   incorrectData,
@@ -62,9 +63,9 @@ module.exports.deleteMovie = (req, res, next) => {
     .then((movie) => {
       if (String(movie.owner) === owner) {
         return movie.remove();
-      } throw next(new BadRequest(forbiddenToDelete));
+      } throw next(new ForbiddenToDelete(forbiddenToDelete));
     })
-    .then(() => res.send(successfulDelete))
+    .then(() => res.send({ message: successfulDelete }))
     .catch((err) => {
       if (err === 'CastError') {
         next(new BadRequest(incorrectData));
